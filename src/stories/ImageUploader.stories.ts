@@ -1,6 +1,6 @@
-import type { Meta, StoryObj } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react';
 
-import { ImageUploader } from '../components'
+import { ImageUploader } from '../components';
 
 const meta = {
   title: 'Components/ImagesUploader',
@@ -9,19 +9,13 @@ const meta = {
   parameters: {
     layout: 'fullscreen',
   },
-} satisfies Meta<typeof ImageUploader>
+} satisfies Meta<typeof ImageUploader>;
 
-export default meta
-type Story = StoryObj<typeof meta>
+export default meta;
+type Story = StoryObj<typeof meta>;
 
 export const Basic: Story = {
   args: {
-    config: {
-      dragDropClassName: '',
-      addImagesButton: {
-        className: 'bg-neutral-100 hover:neutral-800"',
-        text: 'Elegir imagenes',
-      },
-    },
+    config: {},
   },
-}
+};
