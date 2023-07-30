@@ -143,8 +143,6 @@ In the `config` object u have `error.onError` this function will be executed if 
 />
 ```
 
-![Drag Racing](https://raw.githubusercontent.com/MartinMaffei95/react-images-uploader/main/public/galaxyEx.png)
-
 # Drag and Drop
 
 You can execute functions in the `onDragOver` `onDragLeave` `onDrop` events.
@@ -192,6 +190,14 @@ Fast example:
   }}
 />
 ```
+
+And now change from this
+
+![Base Example](https://raw.githubusercontent.com/MartinMaffei95/react-images-uploader/main/public/baseEx.png)
+
+to THIS!🎉🎉🎉
+
+![Galaxy  example](https://raw.githubusercontent.com/MartinMaffei95/react-images-uploader/main/public/galaxyEx.png)
 
 # All Props
 
