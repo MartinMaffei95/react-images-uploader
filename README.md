@@ -143,7 +143,7 @@ In the `config` object u have `error.onError` this function will be executed if 
 />
 ```
 
-![Drag Racing]()
+![Drag Racing](https://raw.githubusercontent.com/MartinMaffei95/react-images-uploader/main/public/galaxyEx.png)
 
 # Drag and Drop
 
