@@ -1,24 +1,11 @@
-import { CSSProperties, DragEvent, ReactNode } from 'react';
+import { DragEvent } from 'react';
+import { ColorSchemes, Style, StyleWithTextAndIcon } from '.';
 
 interface DragDropActions {
   onDragOver?: (event: DragEvent<HTMLDivElement>) => any;
   onDragLeave?: (event: DragEvent<HTMLDivElement>) => any;
   onDrop?: (event: DragEvent<HTMLDivElement>) => any;
 }
-
-export interface Style {
-  className?: string;
-  style?: CSSProperties;
-}
-
-export type GenericPositions = 'bottom' | 'top' | 'left' | 'right';
-interface TextAndIcon {
-  text?: string;
-  icon?: ReactNode;
-  iconPosition?: GenericPositions;
-}
-
-export interface StyleWithTextAndIcon extends Style, TextAndIcon {}
 
 interface DropArea extends StyleWithTextAndIcon {}
 
@@ -36,19 +23,29 @@ interface ImageElement {
   image?: Style;
 }
 
-export interface OnChangeFunction {
+export interface InputConfiguration {
   setFieldValue?: (inputName: string, value: any) => void;
   fieldName?: string;
+  multiple?: boolean;
+  min?: number;
+  max?: number;
+  accept?: string;
+}
+
+export interface ErrorConfig {
+  onError?: (error?: any) => any;
 }
 
 export interface ButtonConfig extends StyleWithTextAndIcon {}
 export interface ImageUploaderConfig {
-  inputConfig?: OnChangeFunction;
+  inputConfig?: InputConfiguration;
+  colorScheme?: ColorSchemes;
   dragAndDropEvents?: DragDropActions;
   dropArea?: DropArea;
   draggingConfig?: Dragging;
   containerOfImages?: ImagesContainer;
   previewImage?: ImageElement;
+  error?: ErrorConfig;
   buttons?: {
     addImage?: ButtonConfig;
     deleteAll?: ButtonConfig;

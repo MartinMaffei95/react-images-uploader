@@ -1,16 +1,53 @@
-import { Image, UseImageUploaderConfig } from '../interfaces';
+import {
+  Image,
+  UseImageUploaderConfig,
+  errorOnValidation,
+} from '../interfaces';
 import { ChangeEvent, DragEvent, useState, useEffect } from 'react';
 import { v4 as uuid } from 'uuid';
-import { toBase64 } from '../utils';
+import { toBase64, validateMax, validateMin } from '../utils';
 
-const useImageUploader = ({ onChange, fieldName }: UseImageUploaderConfig) => {
+const useImageUploader = ({
+  onChange,
+  fieldName,
+  max,
+  min,
+  multiple,
+  onError,
+}: UseImageUploaderConfig) => {
   const [images, setImages] = useState<Image[]>([]);
   const [dragging, setDragging] = useState<boolean>(false);
+  const [errors, _setErrors] = useState([]);
+
+  const handleErrors = (files: FileList) => {
+    const validateMaxSize: errorOnValidation[] = max
+      ? validateMax(files, max)
+      : [];
+    const validateMinSize: errorOnValidation[] = min
+      ? validateMin(files, min)
+      : [];
+
+    if (validateMaxSize.length > 0 || validateMinSize.length > 0)
+      throw [...validateMinSize, ...validateMaxSize];
+  };
+
+  const receiveFiles = (files: null | FileList) => {
+    try {
+      if (!files) throw 'NO_FILES';
+
+      handleErrors(files);
+      transformAndSave(files);
+    } catch (error) {
+      console.error(error);
+      onError && onError(error);
+    }
+  };
+
   const handleFiles = (event: ChangeEvent<HTMLInputElement>) => {
     const { files } = event.target;
-    if (!files) return;
-    transformAndSave(files);
+    receiveFiles(files);
   };
+
   const transformAndSave = async (files: FileList) => {
     const convertedImages: Image[] = [];
 
@@ -26,7 +63,9 @@ const useImageUploader = ({ onChange, fieldName }: UseImageUploaderConfig) => {
       };
       convertedImages?.push(imageToRender);
     }
-    setImages((state) => [...state, ...convertedImages]);
+    multiple
+      ? setImages((state) => [...state, ...convertedImages])
+      : setImages(() => [convertedImages[0]]);
   };
 
   const deleteOneImage = (imageId: string) => {
@@ -50,13 +89,12 @@ const useImageUploader = ({ onChange, fieldName }: UseImageUploaderConfig) => {
     event.preventDefault();
     toggleDragging(false);
     const { files } = event.dataTransfer;
-    if (!files) return;
-    transformAndSave(files);
+    receiveFiles(files);
   };
 
   useEffect(() => {
     onChange && onChange(fieldName || '', images);
-  }, [images]);
+  }, [images, errors]);
 
   return {
     images,
@@ -66,6 +104,7 @@ const useImageUploader = ({ onChange, fieldName }: UseImageUploaderConfig) => {
     handleFiles,
     handleDrag,
     handleDrop,
+    errors,
   };
 };
 
